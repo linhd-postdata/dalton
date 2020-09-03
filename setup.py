@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='averell',
-    version='1.0.3',
+    version='0.0.1',
     license='Apache-2.0',
     description='Corpora downloader and reader for Spanish sources',
     long_description='%s\n%s' % (
@@ -67,7 +67,10 @@ setup(
         # eg: 'keyword1', 'keyword2', 'keyword3',
     ],
     python_requires='>3.6.*',
-    install_requires=read("requirements.txt").split("\n"),
+    install_requires=[
+        'click',
+        # eg: 'aspectlib==1.1.1', 'six>=1.7',
+    ],
     extras_require={
         # eg:
         #   'rst': ['docutils>=0.11'],

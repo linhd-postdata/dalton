@@ -1,55 +1,23 @@
-from pathlib import Path
+"""
+Module that contains the command line app.
 
+Why does this file exist, and why not put this in __main__?
+
+  You might be tempted to import things from __main__ later, but that will cause
+  problems: the code will get executed twice:
+
+  - When you run `python -maverell` python will execute
+    ``__main__.py`` as a script. That means there won't be any
+    ``averell.__main__`` in ``sys.modules``.
+  - When you import __main__ it will get executed again (as a module) because
+    there's no ``averell.__main__`` in ``sys.modules``.
+
+  Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
+"""
 import click
-from tabulate import tabulate
-
-from .core import export_corpora
-from .core import get_corpora
-from .utils import get_main_corpora_info
 
 
-@click.group()
-def main():
-    """
-    Simple CLI for querying corpora on Github
-    """
-
-
-@main.command()
-@click.option('--corpora-folder', default=Path.cwd() / "corpora",
-              help='Local folder where the corpora will be downloaded')
-@click.argument('ids', nargs=-1, type=click.INT)
-def download(ids, corpora_folder):
-    """
-    Download the corpus with IDS
-    """
-    indexes = [corpus_id - 1 for corpus_id in ids]
-    corpora_features = get_corpora(indexes, corpora_folder)
-    return corpora_features
-
-
-@main.command()
-@click.option('--granularity', help='Granularity')
-@click.option('--corpora-folder', default="./corpora",
-              help='Local folder where the corpora are located')
-@click.option('--filename', default="",
-              help='Result filename')
-@click.argument('ids', nargs=-1, type=click.INT)
-def export(ids, granularity, corpora_folder, filename):
-    """
-    Parse the corpus with IDs with the GRANULARITY into CORPORA-FOLDER
-    """
-    click.echo(f"Using corpora folder: '{corpora_folder}'")
-    export_corpora(ids, granularity, corpora_folder, filename)
-
-
-@main.command(name="list")
-def list_command():
-    """Show the CORPORA info
-    """
-    table = get_main_corpora_info()
-    click.echo(tabulate(table, headers="keys", numalign="right"))
-
-
-if __name__ == '__main__':
-    main()
+@click.command()
+@click.argument('names', nargs=-1)
+def main(names):
+    click.echo(repr(names))

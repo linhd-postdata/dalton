@@ -3,47 +3,37 @@ dist: xenial
 cache: false
 env:
   global:
-  - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
-  - SEGFAULT_SIGNALS=all
+    - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
+    - SEGFAULT_SIGNALS=all
 matrix:
   include:
-  - python: '3.8'
-    env:
-    - TOXENV=check
-  - python: '3.8'
-    env:
-    - TOXENV=docs
-  - env:
-    - TOXENV=py37
-    python: '3.7'
-  - env:
-    - TOXENV=py38
-    python: '3.8'
+    - python: '3.8'
+      env:
+        - TOXENV=check
+    - python: '3.8'
+      env:
+        - TOXENV=docs
+    - env:
+        - TOXENV=py37
+      python: '3.7'
+    - env:
+        - TOXENV=py38
+      python: '3.8'
 before_install:
-- python --version
-- uname -a
-- lsb_release -a || true
-- pip --version
+  - python --version
+  - uname -a
+  - lsb_release -a || true
 install:
-- python -mpip install --progress-bar=off tox -rci/requirements.txt
+  - python -mpip install --progress-bar=off tox -rci/requirements.txt
+  - virtualenv --version
+  - easy_install --version
+  - pip --version
+  - tox --version
 script:
-- tox -v
+  - tox -v
 after_failure:
-- more .tox/log/* | cat
-- more .tox/*/log/* | cat
-deploy:
-  provider: pypi
-  distributions: sdist bdist_wheel
-  skip_cleanup: true
-  skip_existing: true
-  user: linhd-postdata
-  password:
-    secure: UklbfbRdIvqEGqlu4nTx1M/tDmIVnV5TF3ncdr3laoBx5Vovi16KiM9WaQ+1tG5ZEwE5i/mZ3rdfWgkQPiSmjEEchWK3YrL6pbUC5EMpE9Iqs6KaZewEG12Y5tELMTcTeu7sBnqqDr1HX5yjJ9uvI2XAAVZEtK+wE/vb0Hhap/uZQQB1zWJcQcwHkFDMnQSLEE1V59Io5hof+hTPs0GFG/VEiHTk14GYMvWDZS80E7VDG6pAFIZaNtf3Io2YeJTO+XEHpB285vDjxLWans5eaDrDl53QpS7DLxZ1VP6yPFaO3nbZ6WBH/ZnpRJjYqBjzQr6/8YBkiWHmaLCZgxixgvDastV1NEaD70ukzFNDD010c+XxMbbAoEUsWEmqMo1PT+lF28Cg74UVZ8op8GDdA1G5KbmF6zF55DvuFQ1xqnXyZNkjLjfPtrPnyJ52YKU2Tw7fFn4iU/s0nGtPqMgchDaXd62J2YLBQQnLOG6RLhRe8Uqw6LvfuwC4jLXRBOtZ0CPgN8czsCu0TrrvvJ8ehaLaQAi7Ndf2umptEMUrC56KmTzxnk75rAbQWg7vusrIsxowtroDyBKGzlmnzbWrr/E0zzYilyn284JfeWs/uP4ftuMEAbW9ssgUzPavbo24YQWoCbwDi4lHuvT1IFgGj1Vd8qb9zd+Jgeu8y2KiB2M=
-  on:
-    tags: true
-    repo: linhd-postdata/averell
-    python: 3.8
-    condition: "$TOXENV = py38"
+  - more .tox/log/* | cat
+  - more .tox/*/log/* | cat
 notifications:
   email:
     on_success: never
