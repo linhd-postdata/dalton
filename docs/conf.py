@@ -33,6 +33,9 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 #if not on_rtd:  # only set the theme if we're building docs locally
 html_theme = 'alabaster'
+html_theme_options = {
+    'githuburl': 'https://github.com/linhd-postdata/averell/'
+}
 
 html_use_smartypants = True
 html_last_updated_fmt = '%b %d, %Y'

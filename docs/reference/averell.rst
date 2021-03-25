@@ -10,3 +10,6 @@ averell
 
 .. automodule:: averell.utils
     :members:
+
+.. autodata:: DEFAULT_OUTPUT_FOLDER
+   :no-value:
